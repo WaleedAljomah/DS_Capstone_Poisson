@@ -12,7 +12,7 @@ Poisson distribution formula :
 <a href="https://www.codecogs.com/eqnedit.php?latex=\LARGE&space;P(k)=e^{-\lambda}\frac{\lambda^{k}}{k!}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\LARGE&space;P(k)=e^{-\lambda}\frac{\lambda^{k}}{k!}" title="\LARGE P(k)=e^{-\lambda}\frac{\lambda^{k}}{k!}" /></a>
 
 if 
-- (λ) lambda rate parameter (one event(1)/time in between events * time period)
+- (λ) lambda rate parameter ((1)event/time in between events * time period)
 - (k) new events that happen in the same time period of interest 
 
 then the formula can be 
