@@ -24,15 +24,15 @@ then the formula can be
 In this shiny app,
 you can show the distribution based on 2 parameters (Use the sliders to change the value)
 
-- time in between events  
-- time period 
+- Usual time between Events  
+- time period of interest 
 
 the plot is showing a histogram of the events describe by density and a linear cumulative probability model 
 
 you can show the probability of an event based on pre-seted parameters (time in between events, time period)
 and the value of an event of interest (Use the sliders to change the value)
 
-- event
+- new Events
 
 
 

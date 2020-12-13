@@ -22,13 +22,13 @@ shinyUI(fluidPage(
                         value = 10
             ),
             sliderInput("time_period",
-                        "time period of interst:",
+                        "time period of interest:",
                         min = 60,
                         max = 720,
                         post = "min",
                         value = 60),
             sliderInput("k",
-                        "Number of new Events:",
+                        "new Events:",
                         min = 1,
                         max = 20,
                         value = 1)
