@@ -1,6 +1,6 @@
 # Shinyapp to illustrate Poisson distribuation
 
-Shiny app to use Poisson distribution to calculate probability of events in a specific time 
+Shiny app to show how to use Poisson distribution to calculate probability of events in a specific time 
 
 The Poisson distribution may be useful to model events such as
 

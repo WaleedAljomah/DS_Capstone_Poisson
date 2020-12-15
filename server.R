@@ -1,9 +1,17 @@
 library(shiny)
+library(tidyverse)
 library(ggplot2)
-library(dplyr)
+library(AER)
 
-# Shiny Application
+
+
+
 shinyServer(function(input, output) {
+    output$currentTime <- renderText({
+        invalidateLater(1000)
+        paste(Sys.time())
+    })
+    #Panel1
     
     # Reactive expression
     output$distPlot <- renderPlot({
@@ -42,7 +50,76 @@ shinyServer(function(input, output) {
         paste("The probability of the new events = ",round(probability_k,2)*100,"%")
     })
     
+    #Panel2
+    
+    output$modelPlot <- renderPlot({
+        ship <- data("ShipAccidents")
+        sa <- subset(ShipAccidents, service > 0)
+        
+        linearOption <- switch(input$options,
+                               all = glm(incidents ~ type + construction + operation, family = poisson, data = sa, offset = log(service)),
+                               co = glm(incidents ~ construction + operation, family = poisson, data = sa, offset = log(service)),
+                               ct = glm(incidents ~ construction + type, family = poisson, data = sa, offset = log(service)),
+                               ot = glm(incidents ~ type + operation, family = poisson, data = sa, offset = log(service)))
+        
+        colorOption <- switch(input$options,
+                              all = "red",
+                              co = "blue",
+                              ct = 'magenta',
+                              ot = "green")
+        
+        titleOption <- switch(input$options,
+                              all = "all",
+                              co = "construction + operation",
+                              ct = "construction + type",
+                              ot = "operation + type")
+        yOptions <- switch(input$options,
+                           all = construction + operation + type,
+                           co = construction + operation,
+                           ct = construction + type,
+                           ot = operation + type)
+        
+        
+        
+        Poisson_smooth <- function(...) {
+            geom_smooth(method = 'glm', method.args = list(family = "Poisson"))
+        }
+        ggplot(sa, aes(x= incidents, y= yOptions)) +
+            geom_point(size = 5) +
+            Poisson_smooth() +
+            ggtitle(titleOption) +
+            xlab("predictors") +
+            ylab("incidents") +
+            theme(axis.title.x = element_text(size = 18),
+                  axis.title.y = element_text(size = 18),
+                  plot.title = element_text(size = 20,
+                                            face = "bold"))
+    })
+    
+    output$table <- renderDataTable({
+        ship <- data("ShipAccidents")
+        sa <- subset(ShipAccidents, service > 0)
+    })
+    
+    
+    
+    output$summary <- renderPrint({
+        ship <- data("ShipAccidents")
+        sa <- subset(ShipAccidents, service > 0)
+        linearOption <- switch(input$options,
+                               all = glm(incidents ~ type + construction + operation, family = poisson, data = sa, offset = log(service)),
+                               co = glm(incidents ~ construction + operation, family = poisson, data = sa, offset = log(service)),
+                               ct = glm(incidents ~ construction + type, family = poisson, data = sa, offset = log(service)),
+                               ot = glm(incidents ~ type + operation, family = poisson, data = sa, offset = log(service)))
+        summary(linearOption)
+    })
+    
 })
+
+
+
+
+
 
 
 
