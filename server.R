@@ -54,56 +54,25 @@ shinyServer(function(input, output) {
     
     
     #Panel2
-    
-    
-    
-    
-    
     output$modelPlot <- renderPlot({
         ship <- data("ShipAccidents")
         sa <- subset(ShipAccidents, service > 0)
         
-        linearOption <- switch(input$options,
-                               all = glm(incidents ~ type + construction + operation, family = poisson, data = sa, offset = log(service)),
-                               co = glm(incidents ~ construction + operation, family = poisson, data = sa, offset = log(service)),
-                               ct = glm(incidents ~ construction + type, family = poisson, data = sa, offset = log(service)),
-                               ot = glm(incidents ~ type + operation, family = poisson, data = sa, offset = log(service)))
-        
-        colorOption <- switch(input$options,
-                              all = "red",
-                              co = "blue",
-                              ct = 'magenta',
-                              ot = "green")
-        
-        titleOption <- switch(input$options,
-                              all = "all",
-                              co = "construction + operation",
-                              ct = "construction + type",
-                              ot = "operation + type")
-        p_1 <- switch(input$options,
+           p_1 <- switch(input$options,
                       all = ggplot(sa, aes(x= construction + operation + type, y = incidents  )),
                       co = ggplot(sa, aes(x= construction + operation, y = incidents  )),
                       ct = ggplot(sa, aes(x= construction + type, y = incidents )),
                       ot = ggplot(sa, aes(x= operation + type, y =incidents )))
         print(
-            
-            p_1 +
+             p_1 +
                 geom_smooth(method = 'glm', method.args = list(family = "Poisson"), formula = y ~ x) +
                 geom_point()
-            
         )
     })
-    
-    
-    
-    
     output$table <- renderDataTable({
         ship <- data("ShipAccidents")
         sa <- subset(ShipAccidents, service > 0)
     })
-    
-    
-    
     output$summary <- renderPrint({
         ship <- data("ShipAccidents")
         sa <- subset(ShipAccidents, service > 0)
@@ -114,7 +83,6 @@ shinyServer(function(input, output) {
                                ot = glm(incidents ~ type + operation, family = poisson, data = sa, offset = log(service)))
         summary(linearOption)
     })
-    
 })
 
 

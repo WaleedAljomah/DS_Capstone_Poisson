@@ -10,7 +10,7 @@ ui <- navbarPage(
         color = c("#E4F9F9", "#BDF1F1"),
         gradient = "linear",
         direction = "bottom"),
-    title = "Pisson",
+    title = "Poisson",
     tabPanel("distribuation simulation",
              # Sidebar with a slider input for the time in between each Events
              sidebarPanel(
