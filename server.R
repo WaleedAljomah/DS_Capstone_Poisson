@@ -48,7 +48,7 @@ shinyServer(function(input, output) {
         
         #calculate probability based on Poisson distribution formula (k based on input)
         probability_k <- exp(-lambda) * lambda**input$k / factorial(input$k)
-        paste("The probability of the new events = ",round(probability_k,2)*100,"%")
+        paste("The probability of the new events = ",round(probability_k,2))
     })
     
     
@@ -65,7 +65,7 @@ shinyServer(function(input, output) {
                       ot = ggplot(sa, aes(x= operation + type, y =incidents )))
         print(
              p_1 +
-                geom_smooth(method = 'glm', method.args = list(family = "Poisson"), formula = y ~ x) +
+                geom_smooth(method = 'glm', method.args = list(family = "Poisson")) +
                 geom_point()
         )
     })
