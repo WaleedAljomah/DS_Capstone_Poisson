@@ -1,12 +1,18 @@
 library(shiny)
 library(tidyverse)
+library(shinyWidgets)
 
 
-
+# Define UI for application that draws a Poisson probability plot and give a probability of event based on Poisson distribution
 
 ui <- navbarPage(
+    setBackgroundColor(
+        color = c("#E4F9F9", "#BDF1F1"),
+        gradient = "linear",
+        direction = "bottom"),
     title = "Pisson",
     tabPanel("distribuation simulation",
+             # Sidebar with a slider input for the time in between each Events
              sidebarPanel(
                  sliderInput("time_inbetween",
                              "Usual time between Events:",
@@ -27,7 +33,9 @@ ui <- navbarPage(
                              value = 1)
              ),
              mainPanel(
+                 #plot Poisson distribution based on the choice of the slider
                  plotOutput("distPlot"),
+                 #to show the probability calculated based on the inputs of the slider
                  textOutput("calc_prob")
              )
     ),
@@ -38,6 +46,7 @@ ui <- navbarPage(
     
     tabPanel("GLM",
              sidebarPanel(
+                 #radiobutton to choose between predictors 
                  radioButtons("options", "Choose predictors:",
                               c("All" = "all",
                                 "construction + operation" = "co",
@@ -47,8 +56,11 @@ ui <- navbarPage(
              
              mainPanel(
                  tabsetPanel(
+                     #plot the model based on the choice of the predictors in the radiobuttons
                      tabPanel("Plot", plotOutput("modelPlot")),
+                     #summary the model based on the choice of the predictors in the radiobuttons
                      tabPanel("Model", verbatimTextOutput("summary")),
+                     #show the data used for demonstrating Poisson GLM
                      tabPanel("Data", dataTableOutput("table"))
                  )
              )

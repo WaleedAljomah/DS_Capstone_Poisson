@@ -1,6 +1,7 @@
 library(shiny)
 library(tidyverse)
 library(ggplot2)
+library(plotly)
 library(AER)
 
 
@@ -50,7 +51,13 @@ shinyServer(function(input, output) {
         paste("The probability of the new events = ",round(probability_k,2)*100,"%")
     })
     
+    
+    
     #Panel2
+    
+    
+    
+    
     
     output$modelPlot <- renderPlot({
         ship <- data("ShipAccidents")
@@ -73,28 +80,22 @@ shinyServer(function(input, output) {
                               co = "construction + operation",
                               ct = "construction + type",
                               ot = "operation + type")
-        yOptions <- switch(input$options,
-                           all = construction + operation + type,
-                           co = construction + operation,
-                           ct = construction + type,
-                           ot = operation + type)
-        
-        
-        
-        Poisson_smooth <- function(...) {
-            geom_smooth(method = 'glm', method.args = list(family = "Poisson"))
-        }
-        ggplot(sa, aes(x= incidents, y= yOptions)) +
-            geom_point(size = 5) +
-            Poisson_smooth() +
-            ggtitle(titleOption) +
-            xlab("predictors") +
-            ylab("incidents") +
-            theme(axis.title.x = element_text(size = 18),
-                  axis.title.y = element_text(size = 18),
-                  plot.title = element_text(size = 20,
-                                            face = "bold"))
+        p_1 <- switch(input$options,
+                      all = ggplot(sa, aes(x= construction + operation + type, y = incidents  )),
+                      co = ggplot(sa, aes(x= construction + operation, y = incidents  )),
+                      ct = ggplot(sa, aes(x= construction + type, y = incidents )),
+                      ot = ggplot(sa, aes(x= operation + type, y =incidents )))
+        print(
+            
+            p_1 +
+                geom_smooth(method = 'glm', method.args = list(family = "Poisson"), formula = y ~ x) +
+                geom_point()
+            
+        )
     })
+    
+    
+    
     
     output$table <- renderDataTable({
         ship <- data("ShipAccidents")
